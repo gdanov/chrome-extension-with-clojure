@@ -1,0 +1,138 @@
+@font-face {
+	font-family: 'CoreSansAThin';
+	src: url('fonts/CoreSansA/2E2878_0_0.eot');
+	src: url('fonts/CoreSansA/2E2878_0_0.eot?#iefix') format('embedded-opentype'),
+		 url('fonts/CoreSansA/2E2878_0_0.woff2') format('woff2'),
+		 url('fonts/CoreSansA/2E2878_0_0.woff') format('woff'),
+		 url('fonts/CoreSansA/2E2878_0_0.ttf') format('truetype');
+}
+@font-face {
+	font-family: 'CoreSansAThin-Italic';
+	src: url('fonts/CoreSansA/2E2878_3_0.eot');
+	src: url('fonts/CoreSansA/2E2878_3_0.eot?#iefix') format('embedded-opentype'),
+	url('fonts/CoreSansA/2E2878_3_0.woff2') format('woff2'),
+	url('fonts/CoreSansA/2E2878_3_0.woff') format('woff'),
+	url('fonts/CoreSansA/2E2878_3_0.ttf') format('truetype');
+}
+ 
+  
+@font-face {
+	font-family: 'CoreSansALight';
+	src: url('fonts/CoreSansA/2E2878_5_0.eot');
+	src: url('fonts/CoreSansA/2E2878_5_0.eot?#iefix') format('embedded-opentype'),
+	url('fonts/CoreSansA/2E2878_5_0.woff2') format('woff2'),
+	url('fonts/CoreSansA/2E2878_5_0.woff') format('woff'),
+	url('fonts/CoreSansA/2E2878_5_0.ttf') format('truetype');
+}
+@font-face {
+	font-family: 'CoreSansALight-Italic';
+	src: url('fonts/CoreSansA/2E2878_1_0.eot');
+	src: url('fonts/CoreSansA/2E2878_1_0.eot?#iefix') format('embedded-opentype'),
+	url('fonts/CoreSansA/2E2878_1_0.woff2') format('woff2'),
+	url('fonts/CoreSansA/2E2878_1_0.woff') format('woff'),
+	url('fonts/CoreSansA/2E2878_1_0.ttf') format('truetype');
+}
+ 
+  
+@font-face {
+	font-family: 'CoreSansAExtraLight';
+	src: url('fonts/CoreSansA/2E2878_4_0.eot');
+	src: url('fonts/CoreSansA/2E2878_4_0.eot?#iefix') format('embedded-opentype'),
+	url('fonts/CoreSansA/2E2878_4_0.woff2') format('woff2'),
+	url('fonts/CoreSansA/2E2878_4_0.woff') format('woff'),
+	url('fonts/CoreSansA/2E2878_4_0.ttf') format('truetype');
+}
+@font-face {
+	font-family: 'CoreSansAExtraLight-Italic';
+	src: url('fonts/CoreSansA/2E2878_2_0.eot');
+	src: url('fonts/CoreSansA/2E2878_2_0.eot?#iefix') format('embedded-opentype'),
+	url('fonts/CoreSansA/2E2878_2_0.woff2') format('woff2'),
+	url('fonts/CoreSansA/2E2878_2_0.woff') format('woff'),
+	url('fonts/CoreSansA/2E2878_2_0.ttf') format('truetype');
+}
+ 
+  
+@font-face {
+	font-family: 'CoreSansARegular';
+	src: url('fonts/CoreSansA/2E2878_7_0.eot');
+	src: url('fonts/CoreSansA/2E2878_7_0.eot?#iefix') format('embedded-opentype'),
+	url('fonts/CoreSansA/2E2878_7_0.woff2') format('woff2'),
+	url('fonts/CoreSansA/2E2878_7_0.woff') format('woff'),
+	url('fonts/CoreSansA/2E2878_7_0.ttf') format('truetype');
+}
+@font-face {
+	font-family: 'CoreSansARegular-Italic';
+	src: url('fonts/CoreSansA/2E2878_6_0.eot');
+	src: url('fonts/CoreSansA/2E2878_6_0.eot?#iefix') format('embedded-opentype'),
+	url('fonts/CoreSansA/2E2878_6_0.woff2') format('woff2'),
+	url('fonts/CoreSansA/2E2878_6_0.woff') format('woff'),
+	url('fonts/CoreSansA/2E2878_6_0.ttf') format('truetype');
+}
+ 
+@font-face {
+	font-family: 'CoreSansAMedium';
+	src: url('fonts/CoreSansA/2E2878_A_0.eot');
+	src: url('fonts/CoreSansA/2E2878_A_0.eot?#iefix') format('embedded-opentype'),
+	url('fonts/CoreSansA/2E2878_A_0.woff2') format('woff2'),
+	url('fonts/CoreSansA/2E2878_A_0.woff') format('woff'),
+	url('fonts/CoreSansA/2E2878_A_0.ttf') format('truetype');
+}
+@font-face {
+	font-family: 'CoreSansAMedium-Italic';
+	src: url('fonts/CoreSansA/2E2878_8_0.eot');
+	src: url('fonts/CoreSansA/2E2878_8_0.eot?#iefix') format('embedded-opentype'),
+	url('fonts/CoreSansA/2E2878_8_0.woff2') format('woff2'),
+	url('fonts/CoreSansA/2E2878_8_0.woff') format('woff'),
+	url('fonts/CoreSansA/2E2878_8_0.ttf') format('truetype');
+}
+  
+@font-face {
+	font-family: 'CoreSansABold';
+	src: url('fonts/CoreSansA/2E2878_B_0.eot');
+	src: url('fonts/CoreSansA/2E2878_B_0.eot?#iefix') format('embedded-opentype'),
+	url('fonts/CoreSansA/2E2878_B_0.woff2') format('woff2'),
+	url('fonts/CoreSansA/2E2878_B_0.woff') format('woff'),
+	url('fonts/CoreSansA/2E2878_B_0.ttf') format('truetype');
+}
+@font-face {
+	font-family: 'CoreSansABold-Italic';
+	src: url('fonts/CoreSansA/2E2878_9_0.eot');
+	src: url('fonts/CoreSansA/2E2878_9_0.eot?#iefix') format('embedded-opentype'),
+	url('fonts/CoreSansA/2E2878_9_0.woff2') format('woff2'),
+	url('fonts/CoreSansA/2E2878_9_0.woff') format('woff'),
+	url('fonts/CoreSansA/2E2878_9_0.ttf') format('truetype');
+}
+ 
+@font-face {
+	font-family: 'CoreSansAExtraBold';
+	src: url('fonts/CoreSansA/2E2878_D_0.eot');
+	src: url('fonts/CoreSansA/2E2878_D_0.eot?#iefix') format('embedded-opentype'),
+	url('fonts/CoreSansA/2E2878_D_0.woff2') format('woff2'),
+	url('fonts/CoreSansA/2E2878_D_0.woff') format('woff'),
+	url('fonts/CoreSansA/2E2878_D_0.ttf') format('truetype');
+}
+@font-face {
+	font-family: 'CoreSansAExtraBold-Italic';
+	src: url('fonts/CoreSansA/2E2878_C_0.eot');
+	src: url('fonts/CoreSansA/2E2878_C_0.eot?#iefix') format('embedded-opentype'),
+	url('fonts/CoreSansA/2E2878_C_0.woff2') format('woff2'),
+	url('fonts/CoreSansA/2E2878_C_0.woff') format('woff'),
+	url('fonts/CoreSansA/2E2878_C_0.ttf') format('truetype');
+}
+  
+@font-face {
+	font-family: 'CoreSansAHeavy';
+	src: url('fonts/CoreSansA/2E2878_F_0.eot');
+	src: url('fonts/CoreSansA/2E2878_F_0.eot?#iefix') format('embedded-opentype'),
+	url('fonts/CoreSansA/2E2878_F_0.woff2') format('woff2'),
+	url('fonts/CoreSansA/2E2878_F_0.woff') format('woff'),
+	url('fonts/CoreSansA/2E2878_F_0.ttf') format('truetype');
+}
+@font-face {
+	font-family: 'CoreSansAHeavy-Italic';
+	src: url('fonts/CoreSansA/2E2878_E_0.eot');
+	src: url('fonts/CoreSansA/2E2878_E_0.eot?#iefix') format('embedded-opentype'),
+	url('fonts/CoreSansA/2E2878_E_0.woff2') format('woff2'),
+	url('fonts/CoreSansA/2E2878_E_0.woff') format('woff'),
+	url('fonts/CoreSansA/2E2878_E_0.ttf') format('truetype');
+}
