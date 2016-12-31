@@ -1,5 +1,12 @@
--target
--out
+-/~
+-/extension/resources
+-/target
+-/out
+-/resources/public/js//*
+-//*.map
+-//*.cache.edn
 -.repl*
 -.git
 -.idea
+-/figwheel_server.log
+-/.lein-repl-history

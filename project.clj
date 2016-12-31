@@ -1,12 +1,12 @@
 (defproject
   crowl "0.0.0-SNAPSHOT"
 
-  :dependencies [[org.clojure/clojure "1.7.0"]
-                 [org.clojure/clojurescript "1.7.228"]
-                 [org.clojure/tools.nrepl "0.2.12"]
+  :dependencies [[org.clojure/clojure "1.8.0"]
+                 [org.clojure/clojurescript "1.9.293"]
 
-                 [regfunc/regfunc "0.1.0-SNAPSHOT"]
-                 
+
+                 [org.clojure/core.async "0.1.346.0-17112a-alpha"]
+
                  [clj-webdriver "0.7.2"]
                  [org.seleniumhq.selenium/selenium-java "2.47.1"]
 
@@ -14,35 +14,75 @@
 
                  [ring/ring-core "1.4.0"]
                  [ring/ring-jetty-adapter "1.4.0"]
+
+                 ;; needed only for the repl and user.clj. find cleaner way to spec it. I need `lein cljsbuild` to see it
+                 [com.stuartsierra/component "0.3.2"]
+                 ;; same here
+                 [figwheel-sidecar "0.5.0-5"]
                  ]
 
-  :plugins [[lein-cljsbuild "1.1.2"]]
+  :plugins [[lein-cljsbuild "1.1.5"]
+            [lein-figwheel "0.5.8"]]
+
+  :jvm-opts ["-Dapple.awt.UIElement=true"]
+
+  :figwheel {:reload-clj-files {:clj true :cljc true}}
+
+  :clean-targets ^{:protect false} ["out/" "resources/public/js" :target]
+
+  ;;this causes user.clj to be loaded TWICE and repl start-up hangs-up if user.clj automatically starts figwheel
+  ;;:hooks [leiningen.cljsbuild]
   
-  :jvm-opts ["-Dwebdriver.chrome.driver=/Users/gdanov/Downloads/chromedriver" "-Dapple.awt.UIElement=true"]
+  :profiles
+  {:dev  {}
+   :repl {:source-paths ["dev"]
+          :dependencies [[com.cemerick/piggieback "0.2.1"]
+                         [figwheel-sidecar "0.5.0-5"]]
+          :repl-options
+          {:nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
+          
+          :plugins [[cider/cider-nrepl "0.12.0-SNAPSHOT"]
+                    [refactor-nrepl "2.2.0-SNAPSHOT"]]}}
 
-  :profiles {:dev {:dependencies [[com.cemerick/piggieback "0.2.1"]
-                                  [org.clojure/tools.nrepl "0.2.10"]]
-                   :repl-options {:nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}}
-             :repl {:plugins [[cider/cider-nrepl "0.11.0-SNAPSHOT"]
-                                        ;[refactor-nrepl "2.0.0-SNAPSHOT"]
-                              ]}}
-  
+  :cljsbuild
+  {:builds
+   [{:id           "dev"
+     :source-paths ["src"]
+     :figwheel     {:load-warninged-code true}
+     :compiler     {:main tt.fun
+                    :asset-path "js/out"
+                    ;; figwheel complains it needs at least one with :none or nil. but nil defaults to :whetespace according to doc
+                    ;;:optimizations :whitespace
 
-  :cljsbuild {
-              :builds [{:source-paths ["src"]
-                        :compiler  {:optimizations :simple
-                                    :output-dir "out"
-                                    :source-map true
-                                    :cache-analysis true
-                                    :parallel-build true
-                                    :pretty-print true
-                                    :modules {
-                                              :repl {:output-to "out/main.js"
-                                                     :entries #{"repl.core"}
-                                                     }
-                                              :crawl {:output-to "out/crawl.js"
-                                                      :entries #{"tt.fun"}}}
-                                        ; :verbose true
-                                    }}]}
-  :main chrome)
+                    :print-input-delimiter true
 
+                    ;; fig complains that it should be bool. but cljsbuild wants a value?
+                    ;;:source-map "resources/public/js/the-source-map.map"
+                    ;;make browsers less dumb
+                    ;;:source-map-timestamp true
+
+                    ;;does not matter, I bottstrap manually
+                    :output-to  "resources/public/js/ignore-me.js"
+                    :output-dir "resources/public/js/out"}}
+    {:id "dev-content-script"
+     :source-paths ["src"]
+     :figwheel     {:load-warninged-code true
+                    :autoload false}
+     :compiler     {:main tt.mini
+                    :asset-path "js/out"
+
+                    :optimizations :simple
+
+                    :print-input-delimiter true
+
+                    ;; fig complains that it should be bool. but cljsbuild wants a value?
+                    ;;:source-map "resources/public/js/the-source-map.map"
+                    ;;make browsers less dumb
+                    :source-map-timestamp true
+
+                    :closure-output-charset "US-ASCII"
+                    
+                    ;;does not matter, I bottstrap manually
+                    :output-to  "extension/ignoreme.js"
+                    :output-dir "resources-cs/public/js/out"}}
+    ]})

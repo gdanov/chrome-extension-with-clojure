@@ -1,0 +1,41 @@
+{
+		"manifest_version": 2,
+
+		"name": "inprocessdriver",
+		"description": "drives the page",
+		"version": "0.0.1",
+
+		"content_security_policy":
+		"script-src 'self' https://localhost:8443 'unsafe-eval' ; object-src 'self'",
+		
+		"browser_action": {
+				"default_popup": "popup.html"
+		},
+		
+		"permissions": [
+				"activeTab","tabs","webRequest","webRequestBlocking",
+				"https://ajax.googleapis.com/",
+				"https://localhost:8443/*",
+				"<all_urls>",
+				"background"
+		],
+		
+		"background":{
+				"page":"background.html"
+		},
+		
+		"web_accessible_resources":["content_script_post.js","public/js/out/goog/string/string.js"],
+		
+		"content_scripts": [
+				{
+						"matches": ["<all_urls>"],
+						"js": ["content-script.js",
+									 "public/js/out/goog/base.js",
+									 "public/js/out/goog/deps.js",
+									 "public/js/out/cljs_deps.js",
+									 
+									 "content_script_post.js"],
+						"run_at": "document_idle"
+				}
+		]
+}
