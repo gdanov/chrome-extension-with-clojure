@@ -12,7 +12,7 @@ A `deps` file contains only `goog.addDependency(...)` directives. This creates t
 
 A source file begins with one or more `goog.provide(...)` followed by zero or more `goog.require(...)`. This duplicates the info in the `deps` files.
 
-Important is to know that `goog.require(...)` must function as if the required module is loaded in blocking manner otherwise the evaluation of the subsequent code would fail. This presents the major challenge when devising any loading scheme inside the browser where every possible resource loading operation is asynchronous. 
+Important is to know that `goog.require(...)` must function as if the required module is loaded in blocking manner otherwise the evaluation of the subsequent code would fail. This presents the major challenge when devising any loading scheme inside the browser where every possible resource loading operation is asynchronous (well, minus the one closure uses, see below). 
 
 The closure `require` implementation is *not* designed for dynamic loading (in browser runtimes). It's expected to operate on fully loaded and final dependency graph.
 
@@ -20,22 +20,22 @@ You are expected to load your web app source code (when not `:optimized`) by inc
 
 It's critical that the dependency maps are fully loaded before the first ever `goog.require()` invocation because on that invocation the full dependency graph is topologically sorted and loaded with the end result being that each subsequent `goog.require()` is guaranteed cache hit (once the loading has finished!). 
 
-Google closure uses `<scrpit src=..` tags for loading & evaluating. Typically they are written in the documens via `document.write()` which loads and evaluates the files in sequence (and this is what we need). 
+Google closure uses `<scrpit src=..` tags for loading & evaluating. Typically they are written in the documens via `document.write()` which turns out to be smart and simple way to have "single-threaded" blocking load pipeline (and this is what we need). It has it's quirks but this is not the place to discuss them. It works well.
 
-Unfortunatelly chrome extension background and content scripts present two different challenges that renders the approach above unusable:
+Unfortunatelly chrome extension background and content scripts present two different challenges that render the approach above unusable:
 
-* background pages cannot have `<script>..</>` tags
-* content scripts would be unable to use code injected via `<script src=` as it would be loaded in the page environment
+* background pages cannot have `<script>..</>` or `onclick` with javascript code
+* content scripts would be unable to use code injected via `<script src=` as it would be loaded in the page environment which is separated from the content script environment
 	
-The background page limitation is easy to solve. Just create file that contains the script what would be otherwise been injected via `document.write(<script>...</>)` and include it as the rest. 
+The background page limitation is easy to solve. Just create file that contains the script what would otherwise be injected via `document.write(<script>...</>)` and include it as the rest. See [extension/background.html]
 
-The content script solution requires custom file loading implementation. If we want to use Figwheel with unoptimized compilation (which is probably my main motivation) it also adds small extra challenge as Figwheel depends on goog.net.jsloader (which uses the same approach as above). The steps are:
+The content script solution requires custom file loading implementation. If we want to use Figwheel with unoptimized compilation (which is my main motivation apart from the geek's joy of yak shaving) it also adds small extra challenge as Figwheel depends on `goog.net.jsloader` (which uses almost the same approach as above). The steps are:
 
-* set global var `CLOSURE_IMPORT_SCRIPT` to your custom "write tag" function. Closure will use it to trigger the load&eval for each file once it has resolved the dependency graph. The function must invoke the loading and evaluation asynchronously. In my case it loads and evaluates the file in two separate `Promises` so that I can chain and serialize the evaluation process
-* using the mechanism above directly load first `base.js` and then the dependency maps
+* set global var `CLOSURE_IMPORT_SCRIPT` to your custom "write tag" function. Closure will use it to trigger the load & eval for each file once it has resolved the dependency graph. The function is allowed to defer the loading and evaluation as the serialization of this process is handled by the way `<script ..>` tags are handled in the browser. Preserving the order is critical though. In my case it loads and evaluates the file in two separate `Promises` so that I can chain and serialize the evaluation process
+* using the mechanism above directly load first `base.js` and then the dependency maps. Load `deps.js` explicitly (usually not necessary)
 * chain to the last `Promise` from previous step `goog.require("my-main-ns")`
-* optionally chain a step to replace the `CLOSURE_IMPORT_SCRIPT` function with somthing throwing error just to be on the safe side
-* monkeypatch goog.net.jsloader.load to use the same mechanism as above, but returning `Deferred` which Figwheel uses to serialize the loading which makes our job easier
+* optionally chain a step to replace the `CLOSURE_IMPORT_SCRIPT` function with somthing throwing error just to be on the safe side in case something tries to dynamicall load module
+* monkeypatch goog.net.jsloader.load to use the same mechanism as above, but returning `Deferred` which Figwheel uses to serialize the loading 
 * that's it!
 
 # Q & A
