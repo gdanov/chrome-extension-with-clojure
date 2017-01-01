@@ -62,27 +62,6 @@
                     ;;:source-map-timestamp true
 
                     ;;does not matter, I bottstrap manually
-                    :output-to  "resources/public/js/ignore-me.js"
-                    :output-dir "resources/public/js/out"}}
-    {:id "dev-content-script"
-     :source-paths ["src"]
-     :figwheel     {:load-warninged-code true
-                    :autoload false}
-     :compiler     {:main tt.mini
-                    :asset-path "js/out"
-
-                    :optimizations :simple
-
-                    :print-input-delimiter true
-
-                    ;; fig complains that it should be bool. but cljsbuild wants a value?
-                    ;;:source-map "resources/public/js/the-source-map.map"
-                    ;;make browsers less dumb
-                    :source-map-timestamp true
-
-                    :closure-output-charset "US-ASCII"
-                    
-                    ;;does not matter, I bottstrap manually
-                    :output-to  "extension/ignoreme.js"
-                    :output-dir "resources-cs/public/js/out"}}
+                    :output-to  "extension/public/js/ignore-me.js"
+                    :output-dir "extension/public/js/out"}}
     ]})

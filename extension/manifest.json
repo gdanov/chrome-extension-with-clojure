@@ -24,13 +24,12 @@
 				"page":"background.html"
 		},
 		
-		"web_accessible_resources":["content_script_post.js","public/js/out/goog/string/string.js"],
+		"web_accessible_resources":["content_script_post.js","public/*"],
 		
 		"content_scripts": [
 				{
 						"matches": ["<all_urls>"],
-						"js": ["content-script.js",
-									 "public/js/out/goog/base.js",
+						"js": ["public/js/out/goog/base.js",
 									 "public/js/out/goog/deps.js",
 									 "public/js/out/cljs_deps.js",
 									 

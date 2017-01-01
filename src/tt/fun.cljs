@@ -5,7 +5,7 @@
 
 (def fig-config
   {:load-warninged-code true,
-   :debug true
+   :debug false
    :build-id "dev"
    :websocket-url "wss://localhost:8443/figwheel-ws"})
 
