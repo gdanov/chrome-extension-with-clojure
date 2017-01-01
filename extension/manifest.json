@@ -24,15 +24,12 @@
 				"page":"background.html"
 		},
 		
-		"web_accessible_resources":["content_script_post.js","public/*"],
+		"web_accessible_resources":["js/*"],
 		
 		"content_scripts": [
 				{
 						"matches": ["<all_urls>"],
-						"js": ["public/js/out/goog/base.js",
-									 "public/js/out/goog/deps.js",
-									 "public/js/out/cljs_deps.js",
-									 
+						"js": ["js/out/goog/base.js",
 									 "content_script_post.js"],
 						"run_at": "document_idle"
 				}

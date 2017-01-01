@@ -62,6 +62,6 @@
                     ;;:source-map-timestamp true
 
                     ;;does not matter, I bottstrap manually
-                    :output-to  "extension/public/js/ignore-me.js"
-                    :output-dir "extension/public/js/out"}}
+                    :output-to  "extension/js/ignore-me.js"
+                    :output-dir "extension/js/out"}}
     ]})

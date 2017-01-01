@@ -1,55 +1,57 @@
+function getSrcUrl (src){
+		//for this to work "web_accessible_resources" in the manifest must contain the path with wildcard
+		return chrome.extension.getURL ("js/out/goog/"+src);
+}
+
 function load_fn (srcurl){
 		// I am decoupling the source file request from the evaluation so that the source is requested asap, but the evaluation is serialized. This is faster than eval and then request.
-		var r=new XMLHttpRequest ();
-		r.open ("GET", srcurl);
-		var loadPromise=new Promise ((resolve) => {
-				r.onreadystatechange= () => {
-						if(r.readyState === XMLHttpRequest.DONE && r.status === 200) {
-								//console.log ("loaded",srcurl);
-								resolve (r.response);
+		var req=new XMLHttpRequest ();
+		req.open ("GET", getSrcUrl (srcurl));
+		var _loadPromise=new Promise ((resolve) => {
+				req.onreadystatechange= () => {
+						if(req.readyState === XMLHttpRequest.DONE && req.status === 200) {
+								resolve (req.response);
 						}}});
-		r.send ();
-		//console.log (srcurl,"requested");
+		req.send ();
 
-		return () => {
-				return new Promise ((resolve) => {
-						loadPromise.then ((src) => {
-								// console.log ("eval",srcurl);
+		//must be function so that I have lazy eval
+		return () => 
+				new Promise ((resolve) => {
+						_loadPromise.then ((src) => {
 								eval (src);
 								resolve ();
-						})})}}
+						})})}
 
-function getSrcUrl (src){
-		return chrome.extension.getURL ("public/js/out/goog/"+src);
-}
+(() => {
+		var loadPromise = Promise.resolve (null);
 
-var loadPromise;
+		function myImport(src, srcText){
+				//invoke outside of the then() so that the loading starts
+				var next = load_fn (src);
+				loadPromise=loadPromise.then (next);
+		};
 
-CLOSURE_IMPORT_SCRIPT = function (src, srcText){
-		if (src != "deps.js"){
-				//	var next=load_fn (base_url+src);
-				//for this to work "web_accessible_resources" in the manifest must contain the path with wildcard
-				var nextFn=load_fn (getSrcUrl (src))
-				if (loadPromise) loadPromise=loadPromise.then (nextFn)
-				else loadPromise=nextFn ();
-		}};
+		CLOSURE_IMPORT_SCRIPT = myImport;
+		
+		//could be in the manifest as well. but can't comment there
+		myImport ("deps.js");
+		myImport ("../cljs_deps.js");
+		
+		loadPromise.then (() => {
+				//trigger the async load. goog will first calculate the dependency tree and then request the files to be loaded bottom-up. I've taken care above to serialize that process
+				goog.require ("tt.mini");
+				//must've changed because of goog.require and should be pointing to the promise of the main namespace
+				loadPromise.then (() => {
+						//prevent from someone accidentally trying to load sth new
+						CLOSURE_IMPORT_SCRIPT=function (src){throw ("I can't load:" + src);}
 
-//trigger the async load. goog will first calculate the dependency tree and then request the files to be loaded bottom-up. I've taken care above to serialize that process
-goog.require ("tt.mini");
+						//monkey patch it for figwheel to work
+						goog.net.jsloader.load = (uri) => {
+								var deferred = new goog.async.Deferred(function (){},{});
+								load_fn (uri) ().then (() => deferred.callback (null))
+								return deferred;
+						}
 
-//prevent from someone accidentally trying to load sth new
-CLOSURE_IMPORT_SCRIPT=function (src){
-		throw ("I can't load:" + src);
-}
-
-loadPromise.then (() => {
-		goog.net.jsloader.load = (uri) => {
-				var deferred = new goog.async.Deferred(function (){},{});
-				load_fn (getSrcUrl (uri)) ().then (function (){
-						deferred.callback (null);
+						console.log ("happy figging");
 				})
-				return deferred;
-		}
-
-		console.log ("I'm the post  content script");
-});
+		});}) ();
