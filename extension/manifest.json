@@ -29,7 +29,8 @@
 		"content_scripts": [
 				{
 						"matches": ["<all_urls>"],
-						"js": ["js/out/goog/base.js",
+						"js": ["content-script.js",
+									 "js/out/goog/base.js",
 									 "content_script_post.js"],
 						"run_at": "document_idle"
 				}
